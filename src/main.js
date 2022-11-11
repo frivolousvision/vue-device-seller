@@ -23,8 +23,14 @@ import {
   faTabletAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faHome, faUserCircle, faDesktop, faLaptop, faMobileAlt, faTabletAlt,
-  );
+library.add(
+  faHome,
+  faUserCircle,
+  faDesktop,
+  faLaptop,
+  faMobileAlt,
+  faTabletAlt
+);
 
 createApp(App)
   .use(store)

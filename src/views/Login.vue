@@ -80,27 +80,27 @@ export default {
       if (currentUser?.username) {
         router.push("/profile");
       }
-    })
+    });
 
-    const handleLogin =()=> {
-        if (!formData.value.username || !formData.value.password) {
-          return;
-        }
+    const handleLogin = () => {
+      if (!formData.value.username || !formData.value.password) {
+        return;
+      }
 
-        loading.value = true;
+      loading.value = true;
 
-        AuthenticationService.login(formData.value)
-          .then((response) => {
-            //updateUser in vuex
-            store.dispatch("updateUser", response.data);
-            router.push("/profile");
-          })
-          .catch((err) => {
-            console.log(err);
-            errorMessage.value = "Unexpected error occurred";
-          })
-          .then(() => (loading.value = false));
-      };
+      AuthenticationService.login(formData.value)
+        .then((response) => {
+          //updateUser in vuex
+          store.dispatch("updateUser", response.data);
+          router.push("/profile");
+        })
+        .catch((err) => {
+          console.log(err);
+          errorMessage.value = "Unexpected error occurred";
+        })
+        .then(() => (loading.value = false));
+    };
 
     return {
       formData,

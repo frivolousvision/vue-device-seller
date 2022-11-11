@@ -12,7 +12,7 @@
             <button
               class="btn-close"
               type="button"
-              data-bs-dismiss="modal"
+              @click="hideDeviceModal()"
             ></button>
           </div>
           <div class="modal-body">
@@ -81,15 +81,15 @@
             <button
               class="btn btn-secondary"
               type="button"
-              data-bs-dismiss="modal"
+              @click="hideDeviceModal()"
             >
               Close
             </button>
             <button
               class="btn btn-primary"
               type="submit"
+              
               @click="submitted = true"
-              data-bs-dismiss="modal"
             >
               Save Changes
             </button>
@@ -102,7 +102,7 @@
 
 <script>
 import Device from "../models/device";
-import {ref} from 'vue';
+import { ref } from "vue";
 import DeviceType from "../models/device-type";
 import DeviceService from "../services/device.service";
 import $ from "jquery";
@@ -113,17 +113,17 @@ export default {
     selectedDevice: { type: Object },
   },
   setup(props, context) {
-    const device = ref(new Device())
-    const errorMessage = ref('')
+    const device = ref(new Device());
+    const errorMessage = ref("");
     const submitted = ref(false);
     const deviceTypes = ref([
-        DeviceType.LAPTOP,
-        DeviceType.PHONE,
-        DeviceType.TABLET,
-        DeviceType.DESKTOP,
-      ],)
+      DeviceType.LAPTOP,
+      DeviceType.PHONE,
+      DeviceType.TABLET,
+      DeviceType.DESKTOP,
+    ]);
 
-    const saveDevice =()=> {
+    const saveDevice = () => {
       if (
         !device.value.name ||
         !device.value.price ||
@@ -135,18 +135,23 @@ export default {
       DeviceService.saveDevice(device.value)
         .then((response) => {
           context.emit("saved", response.data);
-          $("#deviceModel").modal("hide");
+          hideDeviceModal()
+          submitted.value = false;
         })
         .catch((err) => {
           errorMessage.value = "Unexpected error occurred";
           console.log(err);
         });
-    }
-    const showDeviceModal =()=> {
+
+    };
+    const showDeviceModal = () => {
       device.value = Object.assign({}, props.selectedDevice);
       $("#deviceModal").modal("show");
-    }
-  
+    };
+    const hideDeviceModal = () => {
+      $("#deviceModal").modal("hide");
+    };
+
     return {
       device,
       errorMessage,
@@ -154,8 +159,9 @@ export default {
       deviceTypes,
       saveDevice,
       showDeviceModal,
-    }
-  }
+      hideDeviceModal,
+    };
+  },
   /*
   data() {
     return {
